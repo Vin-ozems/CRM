@@ -88,3 +88,37 @@ WHERE opportunity_id IS NULL OR opportunity_id = ' '
 	OR engage_date	IS NULL OR engage_date = ' '
 	OR close_date	IS NULL OR close_date = ' '
 	OR close_value IS NULL OR close_value = ' '; 
+
+# Delete unused column
+SELECT * FROM `account`;
+ALTER TABLE `account`
+DROP COLUMN `subsidiary_of`; #deleting the `subsidiary_of` because of the null and blank in the columns 
+
+DELETE FROM Sales_pipeline
+WHERE 
+	engage_date IS NULL OR engage_date = ''
+  OR close_date IS NULL OR close_date = ''
+  OR opportunity_id IS NULL OR opportunity_id = ''
+  OR sales_agent IS NULL OR sales_agent = ''
+  OR product IS NULL OR product = ''
+  OR `account` IS NULL OR `account` = ''
+  OR deal_stage IS NULL OR deal_stage = ''
+  OR engage_date IS NULL OR engage_date = ''
+  OR close_date IS NULL OR close_date = ''
+  OR close_value IS NULL OR close_value = '';
+
+ALTER TABLE Sales_pipeline
+ADD COLUMN engage_date_clean DATE,
+ADD COLUMN close_date_clean DATE,
+ADD COLUMN close_value_clean INT;
+
+UPDATE Sales_pipeline
+SET 
+    engage_date_clean = STR_TO_DATE(engage_date, '%d/%m/%Y'),
+    close_date_clean = STR_TO_DATE(close_date, '%d/%m/%Y'),
+    close_value_clean = CAST(close_value AS UNSIGNED);
+
+ALTER TABLE Sales_pipeline
+DROP engage_date,
+DROP close_date,
+DROP close_value;
