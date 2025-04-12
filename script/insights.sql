@@ -128,8 +128,8 @@ ORDER BY total_revenue DESC;
 SELECT 
     a.sector,
     CASE 
-        WHEN a.revenue < 40000 THEN 'Low'
-        WHEN a.revenue BETWEEN 5000000 AND 200000 THEN 'Medium'
+        WHEN a.revenue < 2000 THEN 'Low'
+        WHEN a.revenue BETWEEN 2100 AND 4900 THEN 'Medium'
         ELSE 'High'
     END AS revenue_segment,
     CASE 
